@@ -1,22 +1,30 @@
 - topic_name: "/clock"
-  ros_type_name: "rosgraph_msgs/msg/Clock"
   gz_type_name: "ignition.msgs.Clock"
+  ros_type_name: "rosgraph_msgs/msg/Clock"
   direction: GZ_TO_ROS
 
 - topic_name: "/model/rover/cmd_vel"
-  ros_type_name: "geometry_msgs/msg/Twist"
   gz_type_name: "ignition.msgs.Twist"
+  ros_type_name: "geometry_msgs/msg/Twist"
 
 - topic_name: "/model/rover/odometry"
-  ros_type_name: "nav_msgs/msg/Odometry"
   gz_type_name: "ignition.msgs.Odometry"
+  ros_type_name: "nav_msgs/msg/Odometry"
 
 - gz_topic_name: "/world/demo_world/model/rover/joint_state"
   ros_topic_name: "/joint_states"
-  ros_type_name: "sensor_msgs/msg/JointState"
   gz_type_name: "ignition.msgs.Model"
+  ros_type_name: "sensor_msgs/msg/JointState"
 
 - gz_topic_name: "/model/rover/tf"
   ros_topic_name: "/tf"
-  ros_type_name: "tf2_msgs/msg/TFMessage"
   gz_type_name: "ignition.msgs.Pose_V"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+
+- topic_name: "/camera_front/image_raw"
+  gz_type_name: "ignition.msgs.Image"
+  ros_type_name: "sensor_msgs/msg/Image"
+
+- topic_name: "/camera_front/camera_info"
+  gz_type_name: "ignition.msgs.CameraInfo"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
