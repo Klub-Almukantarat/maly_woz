@@ -9,10 +9,11 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
+    pkg_description = get_package_share_directory('maly_woz_description')
     pkg_share = get_package_share_directory('almu_rover')
 
     xacro_file = os.path.join(
-        pkg_share, 'urdf', 'basic_rover.urdf.xacro')
+        pkg_description, 'urdf', 'basic_rover.urdf.xacro')
     robot_description = xacro.process_file(xacro_file).toxml()
 
     params = {'use_sim_time': True, 'robot_description': robot_description}

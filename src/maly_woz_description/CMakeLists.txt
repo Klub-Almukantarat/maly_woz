@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(almu_rover)
+project(maly_woz_description)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -7,25 +7,10 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
 
-# Install worlds files.
+# Install urdf files.
 install(DIRECTORY
-  worlds
-  DESTINATION share/${PROJECT_NAME}/
-)
-
-# Install launch files.
-install(DIRECTORY
-  launch
-  DESTINATION share/${PROJECT_NAME}/
-)
-
-# Install config files.
-install(DIRECTORY
-  config
+  urdf
   DESTINATION share/${PROJECT_NAME}/
 )
 
