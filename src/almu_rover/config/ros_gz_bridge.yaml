@@ -11,7 +11,7 @@
   ros_type_name: "nav_msgs/msg/Odometry"
   gz_type_name: "ignition.msgs.Odometry"
 
-- gz_topic_name: "/world/island/model/rover/joint_state"
+- gz_topic_name: "/world/demo_world/model/rover/joint_state"
   ros_topic_name: "/joint_states"
   ros_type_name: "sensor_msgs/msg/JointState"
   gz_type_name: "ignition.msgs.Model"

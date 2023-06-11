@@ -9,7 +9,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
-    pkg_share = get_package_share_directory('almu_rover_launch')
+    pkg_share = get_package_share_directory('almu_rover')
 
     xacro_file = os.path.join(
         pkg_share, 'urdf', 'basic_rover.urdf.xacro')
@@ -27,6 +27,7 @@ def generate_launch_description():
         package='rviz2',
         executable='rviz2',
         output='screen',
+        arguments=['--ros-args', '--log-level', 'error'],
     )
 
     world_file = os.path.join(pkg_share, 'worlds', 'world.sdf')
@@ -47,7 +48,7 @@ def generate_launch_description():
         '-z', '0.6',
         '-Y', '-2.10',
         '-topic', '/robot_description'],
-        output='screen'
+        output='screen',
     )
 
     bridge = Node(
@@ -57,7 +58,7 @@ def generate_launch_description():
             'qos_overrides./model/rover.subscriber.reliability': 'reliable',
             'config_file': os.path.join(pkg_share, 'config', 'ros_gz_bridge.yaml'),
         }],
-        output='screen'
+        output='screen',
     )
 
     joy_node = Node(
@@ -76,7 +77,7 @@ def generate_launch_description():
         }],
         remappings=[
             ('cmd_vel', '/model/rover/cmd_vel')
-        ]
+        ],
     )
 
     return LaunchDescription([
