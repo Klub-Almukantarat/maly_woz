@@ -88,6 +88,7 @@ docker run -it \
   -v "/etc/localtime:/etc/localtime:ro" \
   -v "/dev/input:/dev/input" \
   -v "$SCRIPTPATH/docker/bash_history:/home/developer/.bash_history" \
+  -v "$SCRIPTPATH/docker/.bashrc:/home/developer/.bashrc" \
   -v "$SCRIPTPATH/docker/rviz:/home/developer/.rviz2" \
   -v "$SCRIPTPATH:/home/developer/rover_ws" \
   -v "$SCRIPTPATH/docker/ignition:/home/developer/.ignition" \

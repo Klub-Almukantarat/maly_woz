@@ -1,1 +1,1 @@
-ros2 launch almu_rover_launch start_sim.launch.py
+ros2 launch almu_rover start_sim.launch.py

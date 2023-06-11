@@ -17,9 +17,9 @@ ENV SHELL /bin/bash
 USER $USERNAME
 
 # install required packages
-# RUN sudo apt-get update && sudo apt install -y \
-#     ros-humble-rviz2 \
-#     ros-humble-rqt
+RUN sudo apt-get update && sudo apt install -y \
+    ros-humble-navigation2 \
+    ros-humble-nav2-bringup
 
 # RUN pip install \
 #     scipy
