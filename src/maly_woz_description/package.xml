@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>almu_rover</name>
+  <name>maly_woz_description</name>
   <version>0.0.1</version>
-  <description>Main rover package</description>
+  <description>Maly Woz rover description</description>
   <maintainer email="wojcikmichal98@gmail.com">Michal Wojcik</maintainer>
   <license>TODO: License declaration</license>
 
