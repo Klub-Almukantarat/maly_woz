@@ -28,7 +28,10 @@ def generate_launch_description():
         package='rviz2',
         executable='rviz2',
         output='screen',
-        arguments=['--ros-args', '--log-level', 'error'],
+        arguments=[
+            '-d', os.path.join(pkg_share, 'config', 'config.rviz'),
+            '--ros-args', '--log-level', 'error'
+        ],
     )
 
     world_file = os.path.join(pkg_share, 'worlds', 'world.sdf')
