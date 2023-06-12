@@ -44,24 +44,6 @@
         <geometry>
           <cylinder radius="0.1" length="0.1"/>
         </geometry>
-        <surface>
-          <!-- TODO there is probably some bug with friction, we can't turn really well -->
-          <friction>
-            <ode>
-              <mu>1</mu>
-              <mu2>0.1</mu2>
-              <slip1>0.035</slip1>
-              <slip2>0</slip2>
-              <fdir1>0 0 1</fdir1>
-            </ode>
-            <bullet>
-              <friction>1</friction>
-              <friction2>0.1</friction2>
-              <rolling_friction>0.1</rolling_friction>
-              <spinning_friction>0.1</spinning_friction>
-            </bullet>
-          </friction>
-        </surface>
         <origin xyz="0 0 0.05" rpy="0 0 0"/>
       </collision>
       <inertial>
@@ -70,6 +52,22 @@
         <xacro:solid_cylinder_inertia m="0.1" r="0.1" h="0.1" />
       </inertial>
     </link>
+
+    <gazebo reference="wheel_${suffix}">
+      <collision>
+        <surface>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+              <slip1>0.5</slip1>
+              <slip2>0</slip2>
+              <fdir1>0 0 1</fdir1>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </gazebo>
 
     <joint name="wheel_${suffix}_joint" type="revolute">
       <parent link="leg_${suffix}"/>
