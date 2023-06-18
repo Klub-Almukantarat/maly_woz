@@ -50,7 +50,7 @@ fi
 
 if [ $GPU_VENDOR = "Intel" ]
 then
-    DOCKER_OPTS="$DOCKER_OPTS -v \"/dev/dri:/dev/dri\" --device /dev/dri"
+    DOCKER_OPTS="$DOCKER_OPTS -v /dev/dri:/dev/dri --device /dev/dri"
 else
     DOCKER_OPTS="$DOCKER_OPTS --gpus all"
 fi
