@@ -16,5 +16,7 @@ RUN sudo apt-get update && sudo apt install -y \
 # RUN pip install \
 #     scipy
 
+RUN echo "sudo chown -R developer:developer /home/developer" >> /home/developer/.bashrc
+
 WORKDIR /home/developer/rover_ws
 CMD ["/bin/bash"]
