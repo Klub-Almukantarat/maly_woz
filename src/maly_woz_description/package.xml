@@ -5,7 +5,7 @@
   <version>0.0.1</version>
   <description>Maly Woz rover description</description>
   <maintainer email="wojcikmichal98@gmail.com">Michal Wojcik</maintainer>
-  <license>TODO: License declaration</license>
+  <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
