@@ -25,6 +25,10 @@ Możesz sprawdzić, czy wszystko skonfigurowałeś poprawnie, uruchamiając pole
 
 TODO: może nie potrzebujemy Nvidii?
 
+### Uruchamianie dema pod Windowsem w WSL2
+
+Aby wykorzystać WSL zapoznaj się z tym [plikiem](docs/WSL.md).
+
 ## Budowanie i uruchomienie kontenera Dockera
 
 Aby zbudować obraz Dockera, uruchom `./build_image.sh`.
