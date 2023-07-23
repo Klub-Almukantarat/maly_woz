@@ -24,7 +24,24 @@
 - topic_name: "/camera_front/image_raw"
   gz_type_name: "ignition.msgs.Image"
   ros_type_name: "sensor_msgs/msg/Image"
+  direction: GZ_TO_ROS
 
 - topic_name: "/camera_front/camera_info"
   gz_type_name: "ignition.msgs.CameraInfo"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
+  direction: GZ_TO_ROS
+
+- topic_name: "/depth_front/depth"
+  gz_type_name: "ignition.msgs.Image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  direction: GZ_TO_ROS
+
+- topic_name: "/depth_front/camera_info"
+  gz_type_name: "ignition.msgs.CameraInfo"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  direction: GZ_TO_ROS
+
+- topic_name: "/depth_front/depth/points"
+  gz_type_name: "ignition.msgs.PointCloudPacked"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  direction: GZ_TO_ROS
