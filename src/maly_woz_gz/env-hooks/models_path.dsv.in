@@ -1,0 +1,2 @@
+prepend-non-duplicate;IGN_GAZEBO_RESOURCE_PATH;share/maly_woz_gz/models
+prepend-non-duplicate;IGN_GAZEBO_RESOURCE_PATH;share/maly_woz_gz/worlds

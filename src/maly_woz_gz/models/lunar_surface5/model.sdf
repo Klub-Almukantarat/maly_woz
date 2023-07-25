@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <model name="lunar_surface5">
+    <static>True</static>
+    <link name="lunar_surface5_link">
+      <visual name="lunar_surface5_visual">
+        <geometry>
+          <mesh>
+            <uri>meshes/visual/lunar_surface5.obj</uri>
+            <scale>50 50 50</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/lunar_surface_3_color.png</albedo_map>
+              <roughness_map>materials/textures/lunar_surface_3_roughness.png</roughness_map>
+              <metalness_map>materials/textures/lunar_surface_3_metalness.png</metalness_map>
+              <normal_map>materials/textures/lunar_surface_3_normal.png</normal_map>
+            </metal>
+          </pbr>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>0.05 0.05 0.05</specular>
+        </material>
+      </visual>
+      <collision name="lunar_surface5_collision">
+        <geometry>
+          <mesh>
+            <uri>meshes/collision/lunar_surface5.stl</uri>
+            <scale>50 50 50</scale>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>4.225360967782188</mu>
+              <mu2>4.225360967782188</mu2>
+            </ode>
+            <bullet>
+              <friction>4.225360967782188</friction>
+              <friction2>4.225360967782188</friction2>
+            </bullet>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+  </model>
+</sdf>
