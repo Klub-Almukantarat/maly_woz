@@ -21,27 +21,26 @@
   gz_type_name: "ignition.msgs.Pose_V"
   ros_type_name: "tf2_msgs/msg/TFMessage"
 
-- topic_name: "/camera_front/image_raw"
-  gz_type_name: "ignition.msgs.Image"
-  ros_type_name: "sensor_msgs/msg/Image"
-  direction: GZ_TO_ROS
-
-- topic_name: "/camera_front/camera_info"
+- gz_topic_name: "/realsense_front/realsense_d435/camera_info"
+  ros_topic_name: "/realsense_d435/camera_info"
   gz_type_name: "ignition.msgs.CameraInfo"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   direction: GZ_TO_ROS
 
-- topic_name: "/depth_front/depth"
+- gz_topic_name: "/realsense_front/realsense_d435/depth_image"
+  ros_topic_name: "/realsense_d435/depth_image"
   gz_type_name: "ignition.msgs.Image"
   ros_type_name: "sensor_msgs/msg/Image"
   direction: GZ_TO_ROS
 
-- topic_name: "/depth_front/camera_info"
-  gz_type_name: "ignition.msgs.CameraInfo"
-  ros_type_name: "sensor_msgs/msg/CameraInfo"
+- gz_topic_name: "/realsense_front/realsense_d435/image"
+  ros_topic_name: "/realsense_d435/image"
+  gz_type_name: "ignition.msgs.Image"
+  ros_type_name: "sensor_msgs/msg/Image"
   direction: GZ_TO_ROS
 
-- topic_name: "/depth_front/depth/points"
+- gz_topic_name: "/realsense_front/realsense_d435/points"
+  ros_topic_name: "/realsense_d435/points"
   gz_type_name: "ignition.msgs.PointCloudPacked"
   ros_type_name: "sensor_msgs/msg/PointCloud2"
   direction: GZ_TO_ROS
