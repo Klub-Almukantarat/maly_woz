@@ -3,6 +3,7 @@
   <xacro:include filename="$(find maly_woz_description)/urdf/leg.urdf.xacro" />
   <xacro:include filename="$(find maly_woz_description)/urdf/materials.urdf.xacro" />
   <xacro:include filename="$(find maly_woz_description)/urdf/inertia.urdf.xacro" />
+  <xacro:include filename="$(find maly_woz_description)/urdf/sensors/realsense_d435/realsense_d435.urdf.xacro" />
 
   <xacro:property name="wheel_radius" value="0.1"/>
   <xacro:property name="leg_length" value="0.2"/>
@@ -53,81 +54,9 @@
              x_offset="-${chassis_length / 2}" y_offset="-${chassis_width / 2}" z_offset="0.0"
              wheel_radius="${wheel_radius}" leg_length="${leg_length}" />
 
-  <!-- TODO extract camera to macro -->
-  <link name="camera_front">
-    <inertial>
-      <mass value="0.1"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <xacro:solid_cuboid_inertia m="0.1" w="0.1" d="0.1" h="0.1" />
-    </inertial>
-    <collision>
-      <geometry>
-        <box size="0.1 0.1 0.1"/>
-      </geometry>
-    </collision>
-    <visual>
-      <geometry>
-        <box size="0.1 0.1 0.1"/>
-      </geometry>
-      <material name="black" />
-    </visual>
-  </link>
-
-  <gazebo reference="camera_front">
-    <!-- D435 depth camera -->
-    <sensor name="camera_front" type="camera">
-      <always_on>1</always_on>
-      <update_rate>30</update_rate>
-      <visualize>1</visualize>
-      <topic>camera_front/image_raw</topic>
-      <camera name="d435">
-        <horizontal_fov>1.21126</horizontal_fov>
-        <image>
-          <width>640</width>
-          <height>480</height>
-          <format>RGB_INT8</format>
-        </image>
-        <clip>
-          <near>0.1</near>
-          <far>100</far>
-        </clip>
-        <noise>
-          <type>gaussian</type>
-          <mean>0</mean>
-          <stddev>0.007</stddev>
-        </noise>
-      </camera>
-    </sensor>
-    <sensor name="depth_front" type="depth_camera">
-      <always_on>1</always_on>
-      <update_rate>30</update_rate>
-      <visualize>0</visualize>
-      <topic>depth_front/depth</topic>
-      <camera name="d435_depth">
-        <horizontal_fov>1.48702</horizontal_fov>
-        <image>
-          <width>1280</width>
-          <height>720</height>
-        </image>
-        <clip>
-          <near>0.1</near>
-          <far>10</far>
-        </clip>
-        <noise>
-          <type>gaussian</type>
-          <mean>0</mean>
-          <stddev>0.1</stddev>
-        </noise>
-      </camera>
-    </sensor>
-  </gazebo>
-
-  <joint name="camera_front_joint" type="fixed">
-    <parent link="body"/>
-    <child link="camera_front"/>
+  <xacro:realsense_d435 prefix="realsense_front" parent="body">
     <origin xyz="0.4 0 0.2" rpy="0 ${20 * pi / 180} 0"/>
-    <axis xyz="0 0 0"/>
-  </joint>
+  </xacro:realsense_d435>
 
   <gazebo>
     <plugin

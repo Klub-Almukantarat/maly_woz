@@ -105,6 +105,6 @@ def generate_launch_description():
             bridge,
             joy_node,
             joy_teleop_node,
-            TimerAction(period=1.0, actions=[rviz]),
+            TimerAction(period=2.0, actions=[rviz]),
         ]
     )
