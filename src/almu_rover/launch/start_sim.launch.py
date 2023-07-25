@@ -1,10 +1,11 @@
 import os
+
 import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch_ros.actions import Node
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -36,7 +37,7 @@ def generate_launch_description():
         ],
     )
 
-    world_file = os.path.join(pkg_share, "worlds", "world.sdf")
+    world_file = "lunar_world.sdf"  # TODO make this a parameter
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py")
@@ -53,13 +54,11 @@ def generate_launch_description():
             "-name",
             "rover",
             "-x",
-            "1.6",
+            "0",
             "-y",
-            "0.5",
+            "0",
             "-z",
-            "0.6",
-            "-Y",
-            "-2.10",
+            "-5.5",
             "-topic",
             "/robot_description",
         ],
@@ -78,6 +77,7 @@ def generate_launch_description():
         output="screen",
     )
 
+    # TODO load depending on parameter
     joy_node = Node(
         package="joy",
         executable="joy_node",
@@ -100,11 +100,11 @@ def generate_launch_description():
     return LaunchDescription(
         [
             robot_state_pub_node,
-            rviz,
             gazebo,
             spawn,
             bridge,
             joy_node,
             joy_teleop_node,
+            TimerAction(period=1.0, actions=[rviz]),
         ]
     )

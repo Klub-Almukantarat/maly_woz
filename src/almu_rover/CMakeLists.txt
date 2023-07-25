@@ -7,24 +7,10 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
 
-# Install worlds files.
-install(DIRECTORY
-  worlds
-  DESTINATION share/${PROJECT_NAME}/
-)
-
-# Install launch files.
+# Install files.
 install(DIRECTORY
   launch
-  DESTINATION share/${PROJECT_NAME}/
-)
-
-# Install config files.
-install(DIRECTORY
   config
   DESTINATION share/${PROJECT_NAME}/
 )
