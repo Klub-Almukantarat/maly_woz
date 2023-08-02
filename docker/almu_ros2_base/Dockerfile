@@ -38,7 +38,7 @@ RUN echo 'Etc/UTC' > /etc/timezone && \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get -qq clean
 
-# Set up repo to install Ignition
+# Set up repo to install Gazebo
 RUN /bin/sh -c 'wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg' \
   && /bin/sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null'
 
@@ -60,7 +60,7 @@ WORKDIR /home/$USERNAME
 # install fuel-tools
 RUN sudo apt-get update \
  && sudo apt-get install -y \
-    libignition-fuel-tools7-dev
+    libgz-fuel-tools8-dev
 
 USER root
 
@@ -100,9 +100,9 @@ RUN apt-get update -qq \
 RUN /bin/sh -c 'curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg' \
   && /bin/sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null'
 
-# install ignition fortress
+# install Gazebo Garden
 RUN apt-get update \
-  && apt-get install -y ignition-fortress \
+  && apt-get install -y gz-garden \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get clean -qq
 
@@ -147,7 +147,7 @@ WORKDIR /home/$USERNAME
 
 # COPY . src/mbzirc
 
-ENV IGNITION_VERSION fortress
+ENV GZ_VERSION garden
 
 # RUN sudo apt-get update \
 #   && rosdep update \
@@ -165,7 +165,7 @@ ENV IGNITION_VERSION fortress
 # install basic packages
 RUN sudo apt-get update && sudo apt install -y \
     ros-humble-xacro \
-    ros-humble-ros-ign
+    ros-humble-ros-gzgarden
 
 RUN /bin/sh -c 'echo ". /opt/ros/humble/setup.bash" >> ~/.bashrc'
 #  && /bin/sh -c 'echo ". ~/mbzirc_ws/install/setup.sh" >> ~/.bashrc'

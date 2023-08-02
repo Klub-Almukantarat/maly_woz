@@ -60,8 +60,8 @@
 
   <gazebo>
     <plugin
-      filename="ignition-gazebo-diff-drive-system"
-      name="ignition::gazebo::systems::DiffDrive">
+      filename="gz-sim-diff-drive-system"
+      name="gz::sim::systems::DiffDrive">
       <left_joint>wheel_front_left_joint</left_joint>
       <left_joint>wheel_rear_left_joint</left_joint>
       <right_joint>wheel_front_right_joint</right_joint>
@@ -82,8 +82,8 @@
     </plugin>
 
     <plugin
-      filename="ignition-gazebo-joint-state-publisher-system"
-      name="ignition::gazebo::systems::JointStatePublisher">
+      filename="gz-sim-joint-state-publisher-system"
+      name="gz::sim::systems::JointStatePublisher">
     </plugin>
   </gazebo>
 </robot>

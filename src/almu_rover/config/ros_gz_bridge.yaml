@@ -1,46 +1,46 @@
 - topic_name: "/clock"
-  gz_type_name: "ignition.msgs.Clock"
+  gz_type_name: "gz.msgs.Clock"
   ros_type_name: "rosgraph_msgs/msg/Clock"
   direction: GZ_TO_ROS
 
 - topic_name: "/model/rover/cmd_vel"
-  gz_type_name: "ignition.msgs.Twist"
+  gz_type_name: "gz.msgs.Twist"
   ros_type_name: "geometry_msgs/msg/Twist"
 
 - topic_name: "/model/rover/odometry"
-  gz_type_name: "ignition.msgs.Odometry"
+  gz_type_name: "gz.msgs.Odometry"
   ros_type_name: "nav_msgs/msg/Odometry"
 
 - gz_topic_name: "/world/demo_world/model/rover/joint_state"
   ros_topic_name: "/joint_states"
-  gz_type_name: "ignition.msgs.Model"
+  gz_type_name: "gz.msgs.Model"
   ros_type_name: "sensor_msgs/msg/JointState"
 
 - gz_topic_name: "/model/rover/tf"
   ros_topic_name: "/tf"
-  gz_type_name: "ignition.msgs.Pose_V"
+  gz_type_name: "gz.msgs.Pose_V"
   ros_type_name: "tf2_msgs/msg/TFMessage"
 
 - gz_topic_name: "/realsense_front/realsense_d435/camera_info"
   ros_topic_name: "/realsense_d435/camera_info"
-  gz_type_name: "ignition.msgs.CameraInfo"
+  gz_type_name: "gz.msgs.CameraInfo"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   direction: GZ_TO_ROS
 
 - gz_topic_name: "/realsense_front/realsense_d435/depth_image"
   ros_topic_name: "/realsense_d435/depth_image"
-  gz_type_name: "ignition.msgs.Image"
+  gz_type_name: "gz.msgs.Image"
   ros_type_name: "sensor_msgs/msg/Image"
   direction: GZ_TO_ROS
 
 - gz_topic_name: "/realsense_front/realsense_d435/image"
   ros_topic_name: "/realsense_d435/image"
-  gz_type_name: "ignition.msgs.Image"
+  gz_type_name: "gz.msgs.Image"
   ros_type_name: "sensor_msgs/msg/Image"
   direction: GZ_TO_ROS
 
 - gz_topic_name: "/realsense_front/realsense_d435/points"
   ros_topic_name: "/realsense_d435/points"
-  gz_type_name: "ignition.msgs.PointCloudPacked"
+  gz_type_name: "gz.msgs.PointCloudPacked"
   ros_type_name: "sensor_msgs/msg/PointCloud2"
   direction: GZ_TO_ROS
