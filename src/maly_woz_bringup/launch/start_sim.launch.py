@@ -11,7 +11,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     pkg_ros_gz_sim = get_package_share_directory("ros_gz_sim")
     pkg_description = get_package_share_directory("maly_woz_description")
-    pkg_share = get_package_share_directory("almu_rover")
+    pkg_share = get_package_share_directory("maly_woz_bringup")
 
     xacro_file = os.path.join(pkg_description, "urdf", "basic_rover.urdf.xacro")
     robot_description = xacro.process_file(xacro_file).toxml()
