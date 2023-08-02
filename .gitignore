@@ -32,6 +32,6 @@ AMENT_IGNORE
 .vscode
 
 # Our stuff
-docker/ignition
-docker/rviz
-docker/bash_history
+docker/.gz
+docker/.rviz2
+docker/.bash_history

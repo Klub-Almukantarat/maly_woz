@@ -84,11 +84,11 @@ docker run -it \
   -v "/tmp/.X11-unix:/tmp/.X11-unix" \
   -v "/etc/localtime:/etc/localtime:ro" \
   -v "/dev/input:/dev/input" \
-  -v "$SCRIPTPATH/docker/bash_history:/home/developer/.bash_history" \
+  -v "$SCRIPTPATH/docker/.bash_history:/home/developer/.bash_history" \
   -v "$SCRIPTPATH/docker/.bashrc:/home/developer/.bashrc" \
-  -v "$SCRIPTPATH/docker/rviz:/home/developer/.rviz2" \
+  -v "$SCRIPTPATH/docker/.rviz2:/home/developer/.rviz2" \
   -v "$SCRIPTPATH:/home/developer/rover_ws" \
-  -v "$SCRIPTPATH/docker/ignition:/home/developer/.ignition" \
+  -v "$SCRIPTPATH/docker/.gz:/home/developer/.gz" \
   --network host \
   --rm \
   --privileged \

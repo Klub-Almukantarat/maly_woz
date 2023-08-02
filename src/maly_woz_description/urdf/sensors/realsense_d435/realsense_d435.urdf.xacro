@@ -40,7 +40,7 @@
 
     <gazebo reference="${prefix}_optical_frame">
       <sensor name="realsense_d435" type="rgbd_camera">
-        <ignition_frame_id>${prefix}_optical_frame</ignition_frame_id>
+        <gz_frame_id>${prefix}_optical_frame</gz_frame_id>
         <update_rate>30</update_rate>
         <topic>${prefix}/realsense_d435</topic>
         <camera name="camera">
