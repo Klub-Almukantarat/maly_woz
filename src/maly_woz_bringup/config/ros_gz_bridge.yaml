@@ -44,3 +44,9 @@
   gz_type_name: "gz.msgs.PointCloudPacked"
   ros_type_name: "sensor_msgs/msg/PointCloud2"
   direction: GZ_TO_ROS
+
+- gz_topic_name: "/realsense_front/imu"
+  ros_topic_name: "/realsense_d435/imu"
+  gz_type_name: "gz.msgs.IMU"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  direction: GZ_TO_ROS

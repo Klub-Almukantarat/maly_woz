@@ -18,7 +18,11 @@ def generate_launch_description():
             "depth_topic": "/realsense_d435/depth_image",
             "rgb_topic": "/realsense_d435/image",
             "camera_info_topic": "/realsense_d435/camera_info",
+            "imu_topic": "/realsense_d435/imu",
             "approx_sync": "false",
+            "use_sim_time": "true",
+            "publish_tf_odom": "false",
+            "frame_id": "base_link",
         }.items(),
     )
 
