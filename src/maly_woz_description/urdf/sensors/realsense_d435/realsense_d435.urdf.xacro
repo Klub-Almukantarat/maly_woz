@@ -38,6 +38,14 @@
       <origin xyz="0.02 0 0" rpy="0 0 0"/>
     </joint>
 
+    <link name="${prefix}_imu_frame" />
+
+    <joint name="${prefix}_imu_joint" type="fixed">
+      <parent link="${prefix}_frame"/>
+      <child link="${prefix}_imu_frame"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
     <gazebo reference="${prefix}_optical_frame">
       <sensor name="realsense_d435" type="rgbd_camera">
         <gz_frame_id>${prefix}_optical_frame</gz_frame_id>
@@ -86,6 +94,16 @@
             <stddev>0.007</stddev>
           </noise>
         </camera>
+      </sensor>
+    </gazebo>
+
+    <gazebo reference="${prefix}_imu_frame">
+      <sensor name="imu" type="imu">
+        <gz_frame_id>${prefix}_imu_frame</gz_frame_id>
+        <always_on>1</always_on>
+        <update_rate>100</update_rate>
+        <visualize>true</visualize>
+        <topic>${prefix}/imu</topic>
       </sensor>
     </gazebo>
 
