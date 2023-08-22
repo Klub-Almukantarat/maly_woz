@@ -30,12 +30,20 @@
       </visual>
     </link>
 
+    <link name="${prefix}_sensor_frame" />
+
+    <joint name="${prefix}_sensor_joint" type="fixed">
+      <parent link="${prefix}_frame"/>
+      <child link="${prefix}_sensor_frame"/>
+      <origin xyz="0.02 0 0" rpy="0 0 0"/>
+    </joint>
+
     <link name="${prefix}_optical_frame" />
 
     <joint name="${prefix}_optical_joint" type="fixed">
-      <parent link="${prefix}_frame"/>
+      <parent link="${prefix}_sensor_frame"/>
       <child link="${prefix}_optical_frame"/>
-      <origin xyz="0.02 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="${-pi / 2} 0 ${-pi / 2}"/>
     </joint>
 
     <link name="${prefix}_imu_frame" />
@@ -46,12 +54,13 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
-    <gazebo reference="${prefix}_optical_frame">
+    <gazebo reference="${prefix}_sensor_frame">
       <sensor name="realsense_d435" type="rgbd_camera">
-        <gz_frame_id>${prefix}_optical_frame</gz_frame_id>
+        <gz_frame_id>${prefix}_sensor_frame</gz_frame_id>
         <update_rate>30</update_rate>
         <topic>${prefix}/realsense_d435</topic>
         <camera name="camera">
+          <optical_frame_id>${prefix}_optical_frame</optical_frame_id>
           <horizontal_fov>1.0472</horizontal_fov>
           <lens>
             <intrinsics>
@@ -64,6 +73,13 @@
               <cy>240.5</cy>
               <s>0</s>
             </intrinsics>
+            <projection>
+              <!-- same as intrinsics -->
+              <p_fx>554.25469</p_fx>
+              <p_fy>554.25469</p_fy>
+              <p_cx>320.5</p_cx>
+              <p_cy>240.5</p_cy>
+            </projection>
           </lens>
           <distortion>
             <k1>0.0</k1>

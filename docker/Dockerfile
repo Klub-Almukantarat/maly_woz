@@ -12,7 +12,8 @@ USER $USERNAME
 RUN sudo apt-get update && sudo apt install -y \
     ros-humble-navigation2 \
     ros-humble-nav2-bringup \
-    ros-humble-rtabmap-ros
+    ros-humble-rtabmap-ros \
+    ros-humble-image-pipeline
 
 # RUN pip install \
 #     scipy
