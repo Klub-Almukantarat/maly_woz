@@ -78,6 +78,7 @@
       <max_angular_velocity>2</max_angular_velocity>
       <min_angular_velocity>-2</min_angular_velocity>
       <frame_id>odom</frame_id>
+      <tf_topic>unused</tf_topic>
       <child_frame_id>base_link</child_frame_id>
     </plugin>
 
