@@ -58,7 +58,7 @@ def generate_launch_description():
             "-y",
             "0",
             "-z",
-            "-5.5",
+            "0",
             "-topic",
             "/robot_description",
         ],
@@ -103,8 +103,8 @@ def generate_launch_description():
             gazebo,
             spawn,
             bridge,
-            joy_node,
-            joy_teleop_node,
+            # joy_node,
+            # joy_teleop_node,
             TimerAction(period=2.0, actions=[rviz]),
         ]
     )

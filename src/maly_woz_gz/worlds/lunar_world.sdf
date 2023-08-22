@@ -165,6 +165,7 @@
     </light>
 
     <include>
+      <pose>0 0 5.5 0 0 0</pose>
       <uri>model://lunar_surface5</uri>
     </include>
 
