@@ -18,6 +18,7 @@
         />
       </inertial>
       <collision name="collision">
+        <origin xyz="0 0 0" rpy="0 0 ${pi / 2}"/>
         <geometry>
           <mesh filename="file://${sensor_path}/meshes/realsense.dae" />
         </geometry>
@@ -120,6 +121,9 @@
         <update_rate>100</update_rate>
         <visualize>true</visualize>
         <topic>${prefix}/imu</topic>
+        <imu>
+          <enable_orientation>false</enable_orientation>
+        </imu>
       </sensor>
     </gazebo>
 
