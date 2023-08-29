@@ -48,8 +48,11 @@ Budowanie tworzy linki symboliczne, co oznacza, że można zmieniać pliki nieko
 ## Uruchamianie dema
 
 Po zbudowaniu i source'owaniu możesz uruchomić demo za pomocą `./start_sim` (skrót dla `ros2 launch ...`).
-Powinna wystartować symulacja (Gazebo/Ignition) i wizualizacja (RViz) z pustym światem i prostym łazikiem.
+Powinna wystartować symulacja (Gazebo/Ignition) i wizualizacja (RViz)  z prostym łazikiem na "Księżycu", a także RTAB-Map umożliwiający odometrię i mapowanie otoczenia.
 Uruchamiane są również node'y obsługujące sterowanie joystickiem, więc jeśli taki podłączysz, powinieneś być w stanie kontrolować łazik.
+Można również (w osobnym terminalu) uruchomić `./teleop`, który uruchomi node umożliwiający sterowanie za pomocą klawiatury.
+
+![Demo running](docs/demo-running.png)
 
 # Development
 
