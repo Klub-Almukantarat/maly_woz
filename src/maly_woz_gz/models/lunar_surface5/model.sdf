@@ -33,12 +33,15 @@
         <surface>
           <friction>
             <ode>
-              <mu>4.225360967782188</mu>
-              <mu2>4.225360967782188</mu2>
+              <mu>50</mu>
+              <!-- <mu2>0.5</mu2>
+              <slip1>0.5</slip1>
+              <slip2>0.5</slip2> -->
             </ode>
             <bullet>
-              <friction>4.225360967782188</friction>
-              <friction2>4.225360967782188</friction2>
+              <friction>1</friction>
+              <friction2>1</friction2>
+              <rolling_friction>0.1</rolling_friction>
             </bullet>
           </friction>
         </surface>
