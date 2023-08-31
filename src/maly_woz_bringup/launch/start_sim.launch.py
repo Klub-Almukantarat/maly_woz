@@ -3,9 +3,19 @@ import os
 import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, TimerAction
+from launch.actions import (
+    EmitEvent,
+    IncludeLaunchDescription,
+    LogInfo,
+    RegisterEventHandler,
+    TimerAction,
+)
+from launch.events import matches_action
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.actions import Node
+from launch_ros.actions import LifecycleNode, Node
+from launch_ros.events.lifecycle import ChangeState
+from lifecycle_msgs.msg import Transition
+from launch_ros.event_handlers import OnStateTransition
 
 
 def generate_launch_description():
@@ -103,6 +113,47 @@ def generate_launch_description():
         remappings=[("cmd_vel", "/model/rover/cmd_vel")],
     )
 
+    costmap_config = os.path.join(pkg_share, "config", "costmap_params.yaml")
+    costmap_node = LifecycleNode(
+        package="nav2_costmap_2d",
+        executable="nav2_costmap_2d",
+        name="local_costmap",
+        namespace="local_costmap",
+        parameters=[costmap_config],
+    )
+    emit_event_to_request_that_talker_does_configure_transition = EmitEvent(
+        event=ChangeState(
+            lifecycle_node_matcher=matches_action(costmap_node),
+            transition_id=Transition.TRANSITION_CONFIGURE,
+        )
+    )
+    register_event_handler_for_talker_reaches_inactive_state = RegisterEventHandler(
+        OnStateTransition(
+            target_lifecycle_node=costmap_node,
+            goal_state="inactive",
+            entities=[
+                LogInfo(
+                    msg="node 'costmap_node' reached the 'inactive' state, 'activating'."
+                ),
+                EmitEvent(
+                    event=ChangeState(
+                        lifecycle_node_matcher=matches_action(costmap_node),
+                        transition_id=Transition.TRANSITION_ACTIVATE,
+                    )
+                ),
+            ],
+        )
+    )
+    register_event_handler_for_talker_reaches_active_state = RegisterEventHandler(
+        OnStateTransition(
+            target_lifecycle_node=costmap_node,
+            goal_state="active",
+            entities=[
+                LogInfo(msg="node 'costmap_node' reached the 'active' state."),
+            ],
+        )
+    )
+
     return LaunchDescription(
         [
             robot_state_pub_node,
@@ -110,6 +161,9 @@ def generate_launch_description():
             spawn,
             bridge,
             rtabmap,
+            # register_event_handler_for_talker_reaches_inactive_state,
+            # costmap_node,
+            # emit_event_to_request_that_talker_does_configure_transition,
             # joy_node,
             # joy_teleop_node,
             TimerAction(period=2.0, actions=[rviz]),
