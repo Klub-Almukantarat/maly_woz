@@ -3,19 +3,11 @@ import os
 import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import (
-    EmitEvent,
-    IncludeLaunchDescription,
-    LogInfo,
-    RegisterEventHandler,
-    TimerAction,
-)
-from launch.events import matches_action
+from launch.actions import IncludeLaunchDescription, TimerAction, OpaqueFunction
+from launch.actions.declare_launch_argument import DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.actions import LifecycleNode, Node
-from launch_ros.events.lifecycle import ChangeState
-from lifecycle_msgs.msg import Transition
-from launch_ros.event_handlers import OnStateTransition
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -47,16 +39,27 @@ def generate_launch_description():
         ],
     )
 
-    # world_file = "warehouse.sdf"  # TODO make this a parameter
-    world_file = "lunar_world.sdf"
-    gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py")
-        ),
-        launch_arguments={
-            "gz_args": f"-r {world_file}",
-        }.items(),
+    world_arg = DeclareLaunchArgument(
+        "world",
+        default_value="lunar_world",
+        description="world name",
+        choices=["lunar_world", "warehouse"],
     )
+
+    def launch_setup(context, *args, **kwargs):
+        world = LaunchConfiguration("world")
+        world_val = world.perform(context)
+        world_file = f"{world_val}.sdf"
+        gazebo = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py")
+            ),
+            launch_arguments={
+                "gz_args": f"-r {world_file}",
+            }.items(),
+        )
+
+        return [gazebo]
 
     spawn = Node(
         package="ros_gz_sim",
@@ -117,10 +120,11 @@ def generate_launch_description():
     return LaunchDescription(
         [
             robot_state_pub_node,
-            gazebo,
+            world_arg,
             spawn,
             bridge,
             rtabmap,
             TimerAction(period=2.0, actions=[rviz]),
+            OpaqueFunction(function=launch_setup),
         ]
     )

@@ -37,3 +37,5 @@ docker/.rviz2
 docker/.bash_history
 
 data/
+
+slam_dtu/
