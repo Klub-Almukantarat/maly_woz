@@ -39,3 +39,4 @@ docker/.bash_history
 data/
 
 slam_dtu/
+imu_pipeline/
