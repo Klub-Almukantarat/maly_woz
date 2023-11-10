@@ -15,8 +15,8 @@ RUN sudo apt-get update && sudo apt install -y \
     ros-humble-rtabmap-ros \
     ros-humble-image-pipeline
 
-# RUN pip install \
-#     scipy
+RUN pip install \
+    open3d
 
 RUN echo "sudo chown -R developer:developer /home/developer" >> /home/developer/.bashrc
 

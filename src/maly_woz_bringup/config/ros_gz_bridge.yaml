@@ -11,6 +11,11 @@
   gz_type_name: "gz.msgs.Odometry"
   ros_type_name: "nav_msgs/msg/Odometry"
 
+- topic_name: "/sim_odom"
+  gz_type_name: "gz.msgs.Odometry"
+  ros_type_name: "nav_msgs/msg/Odometry"
+  direction: GZ_TO_ROS
+
 - gz_topic_name: "/world/demo_world/model/rover/joint_state"
   ros_topic_name: "/joint_states"
   gz_type_name: "gz.msgs.Model"
