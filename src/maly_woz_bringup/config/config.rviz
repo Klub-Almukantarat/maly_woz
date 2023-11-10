@@ -7,7 +7,7 @@ Panels:
         - /Global Options1
         - /TF1/Tree1
         - /Depth image1/Topic1
-        - /IMU Odometry1
+        - /Encoder Odometry1/Shape1
       Splitter Ratio: 0.4603603482246399
     Tree Height: 1174
   - Class: rviz_common/Selection
@@ -408,7 +408,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: true
-      Enabled: true
+      Enabled: false
       Keep: 10
       Name: IMU Odometry
       Position Tolerance: 0.10000000149011612
@@ -429,6 +429,84 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /model/rover/odom_imu
+      Value: false
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz_default_plugins/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 10
+      Name: Encoder Odometry
+      Position Tolerance: 0.10000000149011612
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 32; 255; 16
+        Head Length: 0.30000001192092896
+        Head Radius: 0.10000000149011612
+        Shaft Length: 1
+        Shaft Radius: 0.05000000074505806
+        Value: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /model/rover/odometry
+      Value: true
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz_default_plugins/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 10
+      Name: Complementary Filter Odometry
+      Position Tolerance: 0.10000000149011612
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 255; 25; 0
+        Head Length: 0.30000001192092896
+        Head Radius: 0.10000000149011612
+        Shaft Length: 1
+        Shaft Radius: 0.05000000074505806
+        Value: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /model/rover/odom_localized
       Value: true
   Enabled: true
   Global Options:
@@ -491,10 +569,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8597965240478516
+      Pitch: 0.9347967505455017
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.222781658172607
+      Yaw: 3.127779722213745
     Saved: ~
 Window Geometry:
   Color image:
