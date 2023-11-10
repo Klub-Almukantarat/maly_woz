@@ -68,7 +68,7 @@
       <right_joint>wheel_rear_right_joint</right_joint>
       <wheel_separation>${1.0 + 2 * 0.05 + 0.05}</wheel_separation>
       <wheel_radius>${wheel_radius}</wheel_radius>
-      <odom_publish_frequency>30</odom_publish_frequency>
+      <odom_publish_frequency>100</odom_publish_frequency>
       <max_linear_acceleration>5</max_linear_acceleration>
       <min_linear_acceleration>-5</min_linear_acceleration>
       <max_angular_acceleration>5</max_angular_acceleration>

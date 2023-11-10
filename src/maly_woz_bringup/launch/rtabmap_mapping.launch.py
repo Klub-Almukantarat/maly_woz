@@ -14,7 +14,7 @@ def generate_launch_description():
             os.path.join(pkg_rtabmap, "launch", "rtabmap.launch.py")
         ),
         launch_arguments={
-            "args": "--delete_db_on_start",
+            "args": "--delete_db_on_start -d --Reg/Force3DoF true --GFTT/MinDistance 10",
             "depth_topic": "/realsense_d435/depth_image",
             "rgb_topic": "/realsense_d435/image",
             "camera_info_topic": "/realsense_d435/camera_info",
