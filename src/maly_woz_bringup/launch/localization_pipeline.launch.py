@@ -9,6 +9,7 @@ def generate_launch_description():
         remappings=[
             ("wheel_odom", "/model/rover/odometry"),
             ("vo_odom", "/rtabmap/odom"),
+            ("pose_odom", "/global_odom"),
             ("output", "/mikf_odom"),
         ],
     )
