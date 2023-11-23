@@ -9,6 +9,7 @@ Panels:
         - /Depth image1/Topic1
         - /Encoder Odometry1/Shape1
         - /Multi Input EKF Odometry1/Shape1
+        - /Global Odometry1
         - /Global Odometry1/Shape1
       Splitter Ratio: 0.4603603482246399
     Tree Height: 1174
@@ -588,7 +589,7 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /mikf_odom
       Value: true
-    - Angle Tolerance: 0.10000000149011612
+    - Angle Tolerance: 0.05000000074505806
       Class: rviz_default_plugins/Odometry
       Covariance:
         Orientation:
@@ -598,7 +599,7 @@ Visualization Manager:
           Frame: Local
           Offset: 1
           Scale: 1
-          Value: true
+          Value: false
         Position:
           Alpha: 0.30000001192092896
           Color: 204; 51; 204
@@ -608,7 +609,7 @@ Visualization Manager:
       Enabled: true
       Keep: 10
       Name: Global Odometry
-      Position Tolerance: 0.10000000149011612
+      Position Tolerance: 0.05000000074505806
       Shape:
         Alpha: 1
         Axes Length: 1
@@ -673,25 +674,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 19.126684188842773
+      Distance: 20.8916015625
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.6043534874916077
-        Y: -2.952331066131592
-        Z: 0.3999313414096832
+        X: 5.6564202308654785
+        Y: -1.1775312423706055
+        Z: 0.740882396697998
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.2147964239120483
+      Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.1645898818969727
+      Yaw: 3.154595136642456
     Saved: ~
 Window Geometry:
   Color image:

@@ -1,1 +1,2 @@
 . install/setup.bash
+export RCUTILS_COLORIZED_OUTPUT=1

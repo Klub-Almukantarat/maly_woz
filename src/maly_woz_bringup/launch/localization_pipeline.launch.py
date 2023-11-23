@@ -25,7 +25,7 @@ def generate_launch_description():
         parameters=[
             {
                 "map_path": "/home/developer/rover_ws/data/warehouse.ply",
-                "visualize": True,
+                "visualize": False,
                 "use_sim_time": True,
             }
         ],
