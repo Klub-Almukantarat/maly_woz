@@ -48,7 +48,7 @@ then
     GPU_VENDOR=`lspci | grep ' VGA ' | cut -d" " -f 5`
 fi
 
-if [ $GPU_VENDOR = "Intel" ]
+if [[ $GPU_VENDOR = *Intel* || $GPU_VENDOR = *Advanced* ]]
 then
     DOCKER_OPTS="$DOCKER_OPTS -v /dev/dri:/dev/dri --device /dev/dri"
 else
