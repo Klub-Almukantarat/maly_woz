@@ -5,6 +5,9 @@ USER root
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y python3-pip
 ENV SHELL /bin/bash
+RUN mkdir -p /workspace/ros_ws && \
+    chown -R $USERNAME:$USERNAME /workspace && \
+    chown -R $USERNAME:$USERNAME /home/developer
 
 USER $USERNAME
 
@@ -18,7 +21,5 @@ RUN sudo apt-get update && sudo apt install -y \
 # RUN pip install \
 #     scipy
 
-RUN echo "sudo chown -R developer:developer /home/developer" >> /home/developer/.bashrc
-
-WORKDIR /home/developer/rover_ws
+WORKDIR /workspace/ros_ws
 CMD ["/bin/bash"]

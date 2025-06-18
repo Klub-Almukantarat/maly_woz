@@ -1,3 +1,6 @@
+ls:
+    just --list
+
 docker-build:
     ./build_image.sh
 
