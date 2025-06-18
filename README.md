@@ -8,12 +8,25 @@ Projekt łazika marsjańskiego.
 Kod używa ROS 2 Humble i jest rozwijany głównie dla Linux Ubuntu 22.04.
 Może być możliwe uruchomienie go na innych platformach, ale obecnie nie są one explicite wspierane.
 
+### just
+
+[`just`](https://just.systems/man/en/introduction.html) jest programem do robienia aliasów do poleceń.
+Jest on zdecydowanie wygodniejszy od kopiowania zaklęć z README.
+W odróżnieniu od własnego skryptu shellowego potrafi łatwo wspierać autouzupełnianie TABem.
+Jest też dużo łatwiejszy w zrozumieniu i pisaniu od `make`.
+
+Instalacja just: `sudo snap install --edge --classic just`
+
+Autouzupełnianie (wymagany restart terminala żeby zadziałało): `just just-autocomplete`
+
+Aby zobaczyć wszystkie dostępne polecenia, wystarczy uruchomić `just`.
+
 ### Docker
 
 Zaleca się używanie Dockera, aby zapewnić jednolite środowisko dla wszystkich programistów.
 Najpierw musisz go zainstalować, korzystając z [oficjalnych instrukcji](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
 Pamiętaj również o wykonaniu [post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/), zwłaszcza „Manage Docker as a non-root user”.
-Możesz się upewnić, że instalacja Dockera działa, uruchamiając polecenie `docker run hello-world`, które powinno wyświetlić komunikat powitalny.
+Możesz się upewnić, że instalacja Dockera działa, uruchamiając polecenie `just hello-world-docker`, które powinno wyświetlić komunikat powitalny.
 
 ### NVIDIA z Dockerem
 
@@ -21,7 +34,7 @@ Jesteśmy zależni od GPU NVIDII, więc musimy upewnić się, że Docker może g
 Najpierw upewnij się, że masz zainstalowane sterowniki GPU na komputerze hosta, możesz skorzystać z [instrukcji z Ubuntu help](https://help.ubuntu.com/community/NvidiaDriversInstallation).
 Następnie musisz zainstalować NVIDIA Container Toolkit na swoim komputerze, aby Docker mógł korzystać z GPU.
 Skorzystaj z [oficjalnej instrukcji](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html), aby zainstalować.
-Możesz sprawdzić, czy wszystko skonfigurowałeś poprawnie, uruchamiając polecenie `docker run --rm --runtime=nvidia --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi`, które powinno wyświetlić informacje o GPU (nazwa, wersja sterownika, temperatura itp.).
+Możesz sprawdzić, czy wszystko skonfigurowałeś poprawnie, uruchamiając polecenie `just hello-world-nvidia`, które powinno wyświetlić informacje o GPU (nazwa, wersja sterownika, temperatura itp.).
 
 TODO: może nie potrzebujemy Nvidii?
 
@@ -31,26 +44,22 @@ Aby wykorzystać WSL zapoznaj się z tym [plikiem](docs/WSL.md).
 
 ## Budowanie i uruchomienie kontenera Dockera
 
-Aby zbudować obraz Dockera, uruchom `./build_image.sh`.
-Aby uruchomić kontener, uruchom `./run_image.sh`.
-Pamiętaj, aby nie zamykać tego terminala, ponieważ spowoduje to również zabicie działającego kontenera.
-Możesz dołączyć do działającego kontenera z innych terminali za pomocą `./attach.sh` (te można normalnie zamknąć).
+Aby zbudować obraz Dockera, uruchom `just docker-build`.
+Aby uruchomić kontener, uruchom `just docker-start`.
+Aby dołączyć do działającego kontenera uruchom `just docker-attach`.
 
 ## Budowanie kodu
 
 Repozytorium jest workspacem ROSa.
-Aby go zbudować, uruchom `./bild` (jest to skrót dla `colcon build ...`).
-Po zbudowaniu musimy source'ować obszar roboczy, aby terminal wiedział, gdzie znajdują się zbudowane obiekty.
-Możesz to zrobić za pomocą `. sor`.
-Musisz uruchamiać to za każdym razem, gdy dodajesz nową paczkę lub nowe foldery, ale jest to szybkie do uruchomienia, więc najlepiej jest uruchamiać to często (po budowaniu) i wyeliminować potencjalne problemy.
+Aby go zbudować, uruchom `just ros-build`.
 Budowanie tworzy linki symboliczne, co oznacza, że można zmieniać pliki niekompilowalne (konfiguracyjne, Pythona, xmle, itd.) bezpośrednio w folderze `src` i będzie to działać (zmiany w C++ wymagają oczywiście ponownej kompilacji).
 
 ## Uruchamianie dema
 
-Po zbudowaniu i source'owaniu możesz uruchomić demo za pomocą `./start_sim` (skrót dla `ros2 launch ...`).
+Po zbudowaniu możesz uruchomić demo za pomocą `just sim`.
 Powinna wystartować symulacja (Gazebo/Ignition) i wizualizacja (RViz)  z prostym łazikiem na "Księżycu", a także RTAB-Map umożliwiający odometrię i mapowanie otoczenia.
 Uruchamiane są również node'y obsługujące sterowanie joystickiem, więc jeśli taki podłączysz, powinieneś być w stanie kontrolować łazik.
-Można również (w osobnym terminalu) uruchomić `./teleop`, który uruchomi node umożliwiający sterowanie za pomocą klawiatury.
+Można również (w osobnym terminalu) uruchomić `just teleop`, który uruchomi node umożliwiający sterowanie za pomocą klawiatury.
 
 ![Demo running](docs/demo-running.png)
 
@@ -66,8 +75,3 @@ Dzięki temu VS Code będzie widział symbole które są zainstalowane i zbudowa
 W kontenerze zainstaluj dodatki jakie poleca VS Code (ROS, ROS2, Python, C/C++ Extension Pack).
 
 TODO: prawdopodobnie VS Code nie będzie widział jeszcze wszystkich zainstalowanych symboli, trzeba dodać odpowiednie ścieżki do jego ustawień.
-
-# Znane problemy
-
-Symulacja zabiera zaskakująco dużo CPU jak na to, że nic się nie dzieje.
-Trzeba popatrzyć czy nie jest coś źle z konfiguracją.

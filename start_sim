@@ -1,1 +1,0 @@
-ros2 launch maly_woz_bringup start_sim.launch.py use_sim_time:=true

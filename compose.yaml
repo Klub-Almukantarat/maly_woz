@@ -1,0 +1,54 @@
+services:
+  maly_woz:
+    image: almu_rover
+    container_name: rover
+    user: developer
+    build:
+      dockerfile: docker/Dockerfile
+      context: .
+
+    entrypoint: ""
+    command: /bin/bash -c "tail -f"
+    tty: true
+    stdin_open: true
+    network_mode: host
+    privileged: true
+    ipc: host
+    volumes:
+      - /tmp/.docker.xauth:/tmp/.docker.xauth
+      - /dev/input:/dev/input
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /etc/localtime:/etc/localtime:ro
+      - ./src:/workspace/ros_ws/src
+      - type: volume
+        source: dev_home
+        target: /home/developer
+      - type: volume
+        source: ros_build
+        target: /workspace/ros_ws/build
+      - type: volume
+        source: ros_install
+        target: /workspace/ros_ws/install
+      - type: volume
+        source: ros_log
+        target: /workspace/ros_ws/log
+
+    working_dir: /workspace/ros_ws
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=$XAUTH
+      - TERM=xterm-256color
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+volumes:
+  dev_home:
+  ros_build:
+  ros_install:
+  ros_log:
