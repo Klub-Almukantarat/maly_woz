@@ -8,9 +8,14 @@ def generate_launch_description():
         executable="mikf_node",
         remappings=[
             ("wheel_odom", "/model/rover/odometry"),
-            ("vo_odom", "/rtabmap/odom"),
-            ("pose_odom", "/global_odom"),
-            ("output", "/mikf_odom"),
+            # ("vo_odom", "/rtabmap/odom"),
+            # ("pose_odom", "/global_odom"),
+            ("output", "/wheel_odom"),
+        ],
+        parameters=[
+            {
+                "use_sim_time": True,
+            }
         ],
     )
 
@@ -25,7 +30,7 @@ def generate_launch_description():
         parameters=[
             {
                 "map_path": "/home/developer/rover_ws/data/warehouse.ply",
-                "visualize": False,
+                "visualize": True,
                 "use_sim_time": True,
             }
         ],
