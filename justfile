@@ -10,7 +10,10 @@ docker-sim-intel-amd:
 docker-run:
     docker compose --profile hw up -d
 
-docker-attach:
+docker-attach-hw:
+    ./attach-hw.sh
+
+docker-attach-sim:
     ./attach.sh
 
 ros-build:
