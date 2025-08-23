@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+  software:
+    image: my_robot_software:jazzy
+    container_name: my_robot_software
+    network_mode: host
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.docker.xauth
+    volumes:
+      # X11 for GUI
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      # Workspace mount
+      - ./:/workspace:cached
+      # Colcon build/install/log volumes
+      - colcon_build:/workspace/build
+      - colcon_install:/workspace/install
+      - colcon_log:/workspace/log
+    stdin_open: true
+    tty: true
+
+  simulation:
+    image: my_robot_sim:jazzy
+    container_name: my_robot_sim
+    network_mode: host
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.docker.xauth
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./:/workspace:cached
+      - colcon_build:/workspace/build
+      - colcon_install:/workspace/install
+      - colcon_log:/workspace/log
+    stdin_open: true
+    tty: true
+
+  hardware:
+    image: my_robot_hw:jazzy
+    container_name: my_robot_hw
+    network_mode: host
+    privileged: true
+    environment:
+      - ROS_DOMAIN_ID=0   # example, set appropriately
+    volumes:
+      - ./:/workspace:cached
+      - /dev:/dev
+      - colcon_build:/workspace/build
+      - colcon_install:/workspace/install
+      - colcon_log:/workspace/log
+    stdin_open: true
+    tty: true
+
+volumes:
+  colcon_build:
+  colcon_install:
+  colcon_log:
