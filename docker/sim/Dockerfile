@@ -13,7 +13,8 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
     -o /usr/share/keyrings/ros-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] \
     http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" \
-    > /etc/apt/sources.list.d/ros2.list
+    > /etc/apt/sources.list.d/ros2.list && \
+    rm -rf /var/lib/apt/lists/*
 
 # --- Gazebo (Harmonic) apt repo ---
 RUN curl -sSL https://packages.osrfoundation.org/gazebo.gpg \
@@ -25,7 +26,7 @@ RUN curl -sSL https://packages.osrfoundation.org/gazebo.gpg \
 # Install ROS tools + Gazebo Harmonic + ROS-GZ bridge + GUI tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     # Gazebo Harmonic (new 'gz' stack)
-    gazebo-harmonic \
+    gz-harmonic \
     # ROS ↔︎ Gazebo integration (bridge, sim wrappers, msgs)
     ros-jazzy-ros-gz \
     # Useful dev/GUI tools
