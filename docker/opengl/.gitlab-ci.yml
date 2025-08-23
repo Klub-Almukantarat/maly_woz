@@ -1,0 +1,287 @@
+
+
+variables:
+  OS: "ubuntu"
+  OS_VERSION: "22.04"
+  IMAGE_NAME: "gitlab-master.nvidia.com:5005/cuda-installer/opengl"
+  BUILDER_IMAGE_NAME: "${IMAGE_NAME}/gitlab-builder"
+  REGISTRIES: "nvcr.io/nvidia/opengl docker.io/nvidia/opengl urm.nvidia.com/sw-gpu-cuda-installer-docker-local/opengl"
+
+
+before_script:
+  - docker login -u "gitlab-ci-token" -p "${CI_JOB_TOKEN}" "gitlab-master.nvidia.com:5005";
+
+
+.security_scan:
+  image: gitlab-master.nvidia.com:5005/pstooling/pulse-group/pulse-container-scanner/pulse-cli:v2.0.0
+  variables:
+    PSS_SSA_ID: "x9thwm-cootr2q1jdv5p7b8iw4fs4ob3x6nqqsoznyk"
+    PSS_SSA_SCOPE: "nspect.verify%20scan.anchore"
+    SSA_ISSUER_URL: "https://${PSS_SSA_ID}.ssa.nvidia.com/token?grant_type=client_credentials&scope=${PSS_SSA_SCOPE}"
+    IMAGE_ARCHIVE: "opengl.tar"
+
+
+stages:
+  - prepare
+  - base
+  - glvnd
+  - scan
+  - deploy
+
+
+.tags_template: &tags_definition
+  tags:
+    - docker
+
+# builds the gitlab-builder image
+prepare:
+  image: docker:latest
+  stage: prepare
+  script:
+    - |
+      cat << EOF > Dockerfile
+        FROM docker:latest
+        ENV DOCKER_TLS_CERTDIR "/certs"
+        ENV DOCKER_CLI_EXPERIMENTAL enabled
+        ENV BUILDX_URL https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-amd64
+        RUN mkdir -p $HOME/.docker/cli-plugins/
+        RUN wget -O $HOME/.docker/cli-plugins/docker-buildx \$BUILDX_URL
+        RUN chmod a+x $HOME/.docker/cli-plugins/docker-buildx
+        RUN apk add --no-cache git bash findutils curl python3 python3-dev curl g++ libmagic skopeo libffi-dev
+        RUN python3 -m ensurepip
+        RUN rm -r /usr/lib/python*/ensurepip
+        RUN pip3 install --upgrade pip setuptools
+        RUN if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi
+        RUN if [ ! -e /usr/bin/python ]; then ln -sf /usr/bin/python3 /usr/bin/python; fi
+        RUN curl -sSL https://install.python-poetry.org | python3 -
+        ENV PATH="$PATH:/root/.local/bin"
+        RUN poetry --version
+      EOF
+    - docker build -t ${BUILDER_IMAGE_NAME} --cache-from ${BUILDER_IMAGE_NAME} .
+    - docker push ${BUILDER_IMAGE_NAME}
+    - docker images
+  <<: *tags_definition
+
+.base_template: &base_definition
+  stage: base
+  image: ${BUILDER_IMAGE_NAME}
+  retry: 2
+  <<: *tags_definition
+  script:
+    - if [[ "${NO_OS_SUFFIX}" == "true" ]]; then
+        export TAG_BASE=" -t ${IMAGE_NAME}:base";
+        export NV_BASE_EXTRA_TAGS="base";
+      fi
+    - cp NGC-DL-CONTAINER-LICENSE base/
+    - docker buildx use default
+    - docker buildx build --push -t "${IMAGE_NAME}:base-${OS}${OS_VERSION}" ${TAG_BASE}
+                   --build-arg BUILDKIT_INLINE_CACHE=1
+                   --cache-from "${IMAGE_NAME}:base-${OS}${OS_VERSION}"
+                   --build-arg "from=${OS}:${OS_VERSION}"
+                   "base/"
+    - 'echo "NV_BASE_TAGS=\"base-${OS}${OS_VERSION} ${NV_BASE_EXTRA_TAGS}\"" >> tags.env'
+    - cat tags.env
+  artifacts:
+    reports:
+      dotenv: tags.env
+
+
+.glvnd_template: &glvnd_definition
+  stage: glvnd
+  image: ${BUILDER_IMAGE_NAME}
+  retry: 2
+  <<: *tags_definition
+  script:
+    - VERSION="${CI_JOB_NAME:1}"
+    - if [[ "${NO_OS_SUFFIX}" == "true" ]]; then
+        export TAG_RUNTIME=" -t ${IMAGE_NAME}:${VERSION}-runtime";
+        export TAG_DEVEL=" -t ${IMAGE_NAME}:${VERSION}-devel";
+        export NV_GLVND_EXTRA_TAGS="${VERSION}-runtime ${VERSION}-devel";
+      fi
+    - if [[ "${LATEST}" == "true" ]]; then
+        export TAG_LATEST=" -t ${IMAGE_NAME}:latest ";
+        export NV_GLVND_EXTRA_TAGS="${NV_GLVND_EXTRA_TAGS} runtime devel";
+      fi
+    - docker buildx use default
+    - docker buildx build --push -t "${IMAGE_NAME}:${VERSION}-runtime-${OS}${OS_VERSION}" ${TAG_RUNTIME} ${TAG_LATEST}
+                   --build-arg BUILDKIT_INLINE_CACHE=1
+                   --cache-from "${IMAGE_NAME}:${VERSION}-runtime-${OS}${OS_VERSION}"
+                   --build-arg "from=${IMAGE_NAME}:base-${OS}${OS_VERSION}"
+                   --build-arg "LIBGLVND_VERSION=${LIBGLVND_VERSION}"
+                   "glvnd/runtime"
+    - docker buildx build --pull --push -t "${IMAGE_NAME}:${VERSION}-devel-${OS}${OS_VERSION}" ${TAG_DEVEL} ${TAG_LATEST}
+                   --build-arg BUILDKIT_INLINE_CACHE=1
+                   --cache-from "${IMAGE_NAME}:${VERSION}-devel-${OS}${OS_VERSION}"
+                   --build-arg "from=${IMAGE_NAME}:${VERSION}-runtime-${OS}${OS_VERSION}"
+                   "glvnd/devel"
+    - 'echo "NV_GLVND_BASE_TAGS=\"${VERSION}-runtime-${OS}${OS_VERSION} ${VERSION}-devel-${OS}${OS_VERSION} ${NV_GLVND_EXTRA_TAGS}\"" >> glvndtags.env'
+    - cat glvndtags.env
+  artifacts:
+    reports:
+      dotenv: glvndtags.env
+
+
+.scan_template: &scan_definition
+  extends:
+    - .security_scan
+  stage: scan
+  <<: *tags_definition
+  script:
+    - |
+      if [[ -z $NO_SCAN ]]; then
+
+        docker pull ${IMAGE_TO_SCAN}
+        # saving docker image to archive to run the security scan against it in later steps
+        docker save ${IMAGE_TO_SCAN} > ${IMAGE_ARCHIVE}
+        docker rmi -f ${IMAGE_TO_SCAN}
+
+        echo "Connection request with Pulse Security Service using SSA..."
+
+        AuthHeader=$(echo -n $SSA_CLIENT_ID:$SSA_CLIENT_SECRET | base64 | tr -d '\n')
+        export SSA_TOKEN=$(curl --request POST --header "Authorization: Basic $AuthHeader" --header "Content-Type: application/x-www-form-urlencoded" ${SSA_ISSUER_URL} | jq ".access_token" |  tr -d '"')
+
+        if [ -z "$SSA_TOKEN" ]; then
+          exit 1;
+        else
+          echo "SSA Token has been set successfully!";
+        fi
+
+        pulse-cli -n $NSPECT_ID --ssa $SSA_TOKEN scan -i $IMAGE_ARCHIVE -o
+        retval=$?
+
+        echo "Pulse Scan return value: ${retval}"
+
+        rm $IMAGE_ARCHIVE
+        if [[ $retval -ne 0 ]]; then
+          exit 1;
+        fi
+
+      else
+        exit 0;
+      fi
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - pulse-cli.log
+      - licenses.json
+      - sbom.json
+      - vulns.json
+
+
+.deploy_template: &deploy_definition
+  stage: deploy
+  image: ${BUILDER_IMAGE_NAME}
+  retry: 2
+  <<: *tags_definition
+  script:
+    - for tag in $(env | grep 'NV_.*_TAGS' | cut -f2 -d=); do
+        echo ${tag//\"} >> TAG_MANIFEST;
+      done
+    - cat TAG_MANIFEST
+    - |
+      for reg in ${REGISTRIES}; do
+        if [[ $reg == *nvcr.io* ]]; then
+          auth_user="\$oauthtoken"
+          auth_pass=$NVCR_TOKEN
+        elif [[ $reg == *docker.io* ]]; then
+          auth_user=$REGISTRY_USER
+          auth_pass=$REGISTRY_TOKEN
+        elif [[ $reg == *urm.nvidia.com* ]]; then
+          auth_user=$ARTIFACTORY_USER
+          auth_pass=$ARTIFACTORY_PASS
+        fi
+        IFS=$'\n'
+        set -f
+        for tag2 in $(cat < "TAG_MANIFEST"); do
+          if [[ $reg == *nvcr.io* ]] && [[ $tag2 != *"${OS}"* ]]; then
+            echo "Skipping non-os tag '${tag2}' for NGC"
+            continue
+          fi
+          echo skopeo copy --src-creds "gitlab-ci-token:${CI_JOB_TOKEN}" --dest-creds "${auth_user}:MASKED" docker://${IMAGE_NAME}:${tag2} docker://${reg}:${tag2}
+          skopeo copy --src-creds "gitlab-ci-token:${CI_JOB_TOKEN}" --dest-creds "${auth_user}:${auth_pass}" docker://${IMAGE_NAME}:${tag2} docker://${reg}:${tag2}
+        done
+      done
+
+
+base:
+  variables:
+    NO_OS_SUFFIX: "true"
+  <<: *base_definition
+
+base-scan:
+  <<: *scan_definition
+  variables:
+    IMAGE_TO_SCAN: ${IMAGE_NAME}:base-${OS}${OS_VERSION}
+  needs:
+    - job: base
+
+base-deploy:
+  <<: *deploy_definition
+  needs:
+    - job: base
+      artifacts: true
+    - job: base-scan
+
+v1.0-glvnd:
+  variables:
+    LIBGLVND_VERSION: "v1.0.0"
+    NO_OS_SUFFIX: "true"
+  <<: *glvnd_definition
+
+v1.0-glvnd-scan:
+  <<: *scan_definition
+  variables:
+    IMAGE_TO_SCAN: ${IMAGE_NAME}:1.0-glvnd-devel-${OS}${OS_VERSION}
+  needs:
+    - job: v1.0-glvnd
+      artifacts: true
+
+v1.0-glvnd-deploy:
+  <<: *deploy_definition
+  needs:
+    - job: v1.0-glvnd
+      artifacts: true
+    - job: v1.0-glvnd-scan
+
+v1.1-glvnd:
+  variables:
+    LIBGLVND_VERSION: "v1.1.0"
+    NO_OS_SUFFIX: "true"
+  <<: *glvnd_definition
+
+v1.1-glvnd-scan:
+  <<: *scan_definition
+  variables:
+    IMAGE_TO_SCAN: ${IMAGE_NAME}:1.1-glvnd-devel-${OS}${OS_VERSION}
+  needs:
+    - job: v1.1-glvnd
+      artifacts: true
+
+v1.1-glvnd-deploy:
+  <<: *deploy_definition
+  needs:
+    - job: v1.1-glvnd
+      artifacts: true
+    - job: v1.1-glvnd-scan
+
+v1.2-glvnd:
+  variables:
+    LIBGLVND_VERSION: "v1.2.0"
+    NO_OS_SUFFIX: "true"
+  <<: *glvnd_definition
+
+v1.2-glvnd-scan:
+  <<: *scan_definition
+  variables:
+    IMAGE_TO_SCAN: ${IMAGE_NAME}:1.1-glvnd-devel-${OS}${OS_VERSION}
+  needs:
+    - job: v1.2-glvnd
+      artifacts: true
+
+v1.2-glvnd-deploy:
+  <<: *deploy_definition
+  needs:
+    - job: v1.2-glvnd
+      artifacts: true
+    - job: v1.2-glvnd-scan
