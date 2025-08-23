@@ -19,7 +19,7 @@
 # Typical usage: ./join.bash subt
 #
 
-IMG=almu_rover
+IMG=maly_woz/sim:jazzy
 
 xhost +
 containerid=$(docker ps -aqf "ancestor=${IMG}")

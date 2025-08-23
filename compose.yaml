@@ -2,8 +2,7 @@ version: "3.9"
 
 services:
   software:
-    image: my_robot_software:jazzy
-    container_name: my_robot_software
+    image: maly_woz/software:jazzy
     network_mode: host
     environment:
       - DISPLAY=${DISPLAY}
@@ -21,9 +20,9 @@ services:
     stdin_open: true
     tty: true
 
-  simulation:
-    image: my_robot_sim:jazzy
-    container_name: my_robot_sim
+  simulation-nvidia:
+    image: maly_woz/sim:jazzy
+    container_name: simulation
     network_mode: host
     runtime: nvidia
     deploy:
@@ -45,7 +44,29 @@ services:
       - colcon_log:/workspace/log
     stdin_open: true
     tty: true
+    profiles: [sim-nvidia]
 
+  simulation-intel-amd:
+    image: maly_woz/sim:jazzy
+    container_name: simulation
+    network_mode: host
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.docker.xauth
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./:/workspace:cached
+      - /dev/dri:/dev/dri
+      - colcon_build:/workspace/build
+      - colcon_install:/workspace/install
+      - colcon_log:/workspace/log
+    stdin_open: true
+    tty: true
+    profiles: [sim-intel-amd]
+  
   hardware:
     image: my_robot_hw:jazzy
     container_name: my_robot_hw
@@ -61,6 +82,7 @@ services:
       - colcon_log:/workspace/log
     stdin_open: true
     tty: true
+    profiles: [hw]
 
 volumes:
   colcon_build:

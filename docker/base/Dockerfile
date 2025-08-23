@@ -14,8 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-rosdep \
     python3-vcstool \
     wget \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+    curl && rm -rf /var/lib/apt/lists/*
 
 # Initialize rosdep (ignore failure in empty container)
 RUN rosdep update || true
