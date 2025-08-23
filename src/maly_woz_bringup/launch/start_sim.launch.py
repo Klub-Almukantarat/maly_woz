@@ -88,11 +88,11 @@ def generate_launch_description():
         output="screen",
     )
 
-    rtabmap = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_share, "launch", "rtabmap_mapping.launch.py")
-        ),
-    )
+    #rtabmap = IncludeLaunchDescription(
+    #    PythonLaunchDescriptionSource(
+    #        os.path.join(pkg_share, "launch", "rtabmap_mapping.launch.py")
+    #    ),
+    #)
 
     # TODO load depending on parameter
     joy_node = Node(
@@ -120,7 +120,7 @@ def generate_launch_description():
             gazebo,
             spawn,
             bridge,
-            rtabmap,
+            #rtabmap,
             TimerAction(period=2.0, actions=[rviz]),
         ]
     )
