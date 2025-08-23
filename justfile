@@ -1,8 +1,14 @@
 docker-build:
     ./build_image.sh
 
-docker-run-nvidia:
+docker-sim-nvidia:
     docker compose --profile sim-nvidia up -d
+
+docker-sim-intel-amd:
+    docker compose --profile sim-intel-amd up -d
+
+docker-run:
+    docker compose --profile hw up -d
 
 docker-attach:
     ./attach.sh
