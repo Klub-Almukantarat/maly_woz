@@ -66,10 +66,10 @@ services:
     stdin_open: true
     tty: true
     profiles: [sim-intel-amd]
-  
+
   hardware:
-    image: my_robot_hw:jazzy
-    container_name: my_robot_hw
+    image: maly_woz/hardware:jazzy
+    container_name: maly_woz_hw
     network_mode: host
     privileged: true
     environment:
