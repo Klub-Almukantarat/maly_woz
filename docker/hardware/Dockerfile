@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip git python3-jinja2 \
     libboost-dev \
     libgnutls28-dev openssl libtiff-dev pybind11-dev \
-    qtbase5-dev libqt5core5a libqt5widgets \
+    qtbase5-dev libqt5core5a libqt5widgets5 \
     meson cmake \
     python3-yaml python3-ply \
     libglib2.0-dev libgstreamer-plugins-base1.0-dev \
