@@ -21,9 +21,9 @@ def generate_launch_description():
         parameters=[
             {
                 "require_enable_button": False,
-                "axis_linear": {"x": 4},
+                "axis_linear": {"x": 3},
                 "scale_linear": {"x": 1.0},
-                "axis_angular": {"yaw": 1.0},
+                "axis_angular": {"yaw": 2},
             }
         ],
         # remappings=[("cmd_vel", "/model/rover/cmd_vel")],
