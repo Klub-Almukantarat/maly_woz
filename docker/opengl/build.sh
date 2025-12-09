@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 export IMAGE_NAME="nvidia/opengl"
 export LIBGLVND_VERSION="1.2"
 
@@ -28,5 +30,5 @@ docker buildx build -t "${IMAGE_NAME}:${LIBGLVND_VERSION}-glvnd-runtime-${OS}${O
 echo -e "\n>>> Building DEVEL Image\n"
 
 docker buildx build -t "${IMAGE_NAME}:${LIBGLVND_VERSION}-glvnd-devel-${OS}${OS_VERSION}" \
-             --build-arg "from=${IMAGE_NAME}:${LIBGLVND_VERSION}-runtime-${OS}${OS_VERSION}" \
+             --build-arg "from=${IMAGE_NAME}:${LIBGLVND_VERSION}-glvnd-runtime-${OS}${OS_VERSION}" \
              "glvnd/devel"

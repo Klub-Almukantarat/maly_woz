@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 echo "Building OpenGL base images..."
 (cd docker/opengl ; ./build.sh)
 echo "Done"
