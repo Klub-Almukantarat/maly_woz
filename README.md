@@ -48,6 +48,13 @@ Aby zbudować obraz Dockera, uruchom `just docker-build`.
 Aby uruchomić kontener, uruchom `just docker-start`.
 Aby dołączyć do działającego kontenera uruchom `just docker-attach`.
 
+### Obrazy i kontenery Dockera
+
+* `maly_woz/base:jazzy` - obraz bazowy z zainstalowanym ROS 2 Jazzy, nie uruchamiany jako samodzielny kontener.
+* `maly_woz/software:jazzy`, nazwa: `software` - "logika biznesowa", tutaj jest cała logika łazika, algorytmy, itd. Niezależne od platformy (sim/hw), oczekuje sygnałów z czujników i wysyła sygnały do aktuatorów wykorzystując ROS 2.
+* `maly_woz/hardware:jazzy`, nazwa: `hardware` - obsługa czujników i aktuatorów działająca tylko na prawdziwym łaziku (drivery).
+* `maly_woz/sim:jazzy`, nazwa: `simulation` - symulacja łazika w Gazebo. Oczekuje takich samych wejść i wyjść jak `hardware` (czujniki, aktuatory), tyle że dane brane są z symulacji.
+
 ## Budowanie kodu
 
 Repozytorium jest workspacem ROSa.

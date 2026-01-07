@@ -1,8 +1,20 @@
-version: "3.9"
-
 services:
+  base: # dummy service for building base image
+    image: maly_woz/base:jazzy
+    build:
+      dockerfile: docker/base/Dockerfile
+      context: .
+    deploy:
+      replicas: 0
+
   software:
     image: maly_woz/software:jazzy
+    build:
+      dockerfile: docker/software/Dockerfile
+      context: .
+    depends_on:
+      - base
+    container_name: software
     network_mode: host
     environment:
       - DISPLAY=${DISPLAY}
@@ -20,8 +32,29 @@ services:
     stdin_open: true
     tty: true
 
+  hardware:
+    image: maly_woz/hardware:jazzy
+    build:
+      dockerfile: docker/hardware/Dockerfile
+      context: .
+    depends_on:
+      - base
+    container_name: hardware
+    network_mode: host
+    volumes:
+      - ./:/workspace:cached
+      - /dev:/dev
+      - colcon_build:/workspace/build
+      - colcon_install:/workspace/install
+      - colcon_log:/workspace/log
+    stdin_open: true
+    tty: true
+
   simulation-nvidia:
     image: maly_woz/sim:jazzy
+    build:
+      dockerfile: docker/sim/Dockerfile
+      context: .
     container_name: simulation
     network_mode: host
     runtime: nvidia
@@ -44,10 +77,12 @@ services:
       - colcon_log:/workspace/log
     stdin_open: true
     tty: true
-    profiles: [sim-nvidia]
 
   simulation-intel-amd:
     image: maly_woz/sim:jazzy
+    build:
+      dockerfile: docker/sim/Dockerfile
+      context: .
     container_name: simulation
     network_mode: host
     devices:
@@ -65,24 +100,6 @@ services:
       - colcon_log:/workspace/log
     stdin_open: true
     tty: true
-    profiles: [sim-intel-amd]
-
-  hardware:
-    image: maly_woz/hardware:jazzy
-    container_name: hardware
-    network_mode: host
-    privileged: true
-    environment:
-      - ROS_DOMAIN_ID=0   # example, set appropriately
-    volumes:
-      - ./:/workspace:cached
-      - /dev:/dev
-      - colcon_build:/workspace/build
-      - colcon_install:/workspace/install
-      - colcon_log:/workspace/log
-    stdin_open: true
-    tty: true
-    profiles: [hw]
 
 volumes:
   colcon_build:
