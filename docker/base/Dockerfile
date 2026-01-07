@@ -8,13 +8,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     cmake \
+    curl \
     git \
     python3-pip \
     python3-colcon-common-extensions \
     python3-rosdep \
     python3-vcstool \
     wget \
-    curl && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 # Initialize rosdep (ignore failure in empty container)
 RUN rosdep update || true
