@@ -49,8 +49,8 @@ def generate_launch_description():
             "0",
             "-z",
             "0",
-            "-topic",
-            "/robot_description",
+            "-string",
+            robot_description,
         ],
         output="screen",
     )

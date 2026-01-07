@@ -25,12 +25,13 @@ services:
     volumes:
       # X11 for GUI
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      # Workspace mount
-      - ./:/workspace:cached
+      # Packages mount
+      - ./src/maly_woz_bringup:/workspace/src/maly_woz_bringup:rw
+      - ./src/maly_woz_description:/workspace/src/maly_woz_description:rw
       # Colcon build/install/log volumes
-      - colcon_build:/workspace/build
-      - colcon_install:/workspace/install
-      - colcon_log:/workspace/log
+      - software_colcon_build:/workspace/build
+      - software_colcon_install:/workspace/install
+      - software_colcon_log:/workspace/log
     stdin_open: true
     tty: true
 
@@ -44,11 +45,14 @@ services:
     container_name: hardware
     network_mode: host
     volumes:
-      - ./:/workspace:cached
-      - /dev:/dev
-      - colcon_build:/workspace/build
-      - colcon_install:/workspace/install
-      - colcon_log:/workspace/log
+      # Devices
+      - /dev:/dev:rw
+      # Packages mount
+      - ./src/maly_woz_description:/workspace/src/maly_woz_description:rw
+      # Colcon build/install/log volumes
+      - hardware_colcon_build:/workspace/build
+      - hardware_colcon_install:/workspace/install
+      - hardware_colcon_log:/workspace/log
     stdin_open: true
     tty: true
 
@@ -74,11 +78,15 @@ services:
       - QT_X11_NO_MITSHM=1
       - XAUTHORITY=/tmp/.docker.xauth
     volumes:
+      # X11 for GUI
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - ./:/workspace:cached
-      - colcon_build:/workspace/build
-      - colcon_install:/workspace/install
-      - colcon_log:/workspace/log
+      # Packages mount
+      - ./src/maly_woz_description:/workspace/src/maly_woz_description:rw
+      - ./src/maly_woz_gz:/workspace/src/maly_woz_gz:rw
+      # Colcon build/install/log volumes
+      - simulation_colcon_build:/workspace/build
+      - simulation_colcon_install:/workspace/install
+      - simulation_colcon_log:/workspace/log
     stdin_open: true
     tty: true
 
@@ -98,16 +106,27 @@ services:
       - QT_X11_NO_MITSHM=1
       - XAUTHORITY=/tmp/.docker.xauth
     volumes:
+      # X11 for GUI
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - ./:/workspace:cached
+      # Devices
       - /dev/dri:/dev/dri
-      - colcon_build:/workspace/build
-      - colcon_install:/workspace/install
-      - colcon_log:/workspace/log
+      # Packages mount
+      - ./src/maly_woz_description:/workspace/src/maly_woz_description:rw
+      - ./src/maly_woz_gz:/workspace/src/maly_woz_gz:rw
+      # Colcon build/install/log volumes
+      - simulation_colcon_build:/workspace/build
+      - simulation_colcon_install:/workspace/install
+      - simulation_colcon_log:/workspace/log
     stdin_open: true
     tty: true
 
 volumes:
-  colcon_build:
-  colcon_install:
-  colcon_log:
+  software_colcon_build:
+  software_colcon_install:
+  software_colcon_log:
+  hardware_colcon_build:
+  hardware_colcon_install:
+  hardware_colcon_log:
+  simulation_colcon_build:
+  simulation_colcon_install:
+  simulation_colcon_log:

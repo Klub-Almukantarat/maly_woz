@@ -30,13 +30,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # ROS ↔︎ Gazebo integration (bridge, sim wrappers, msgs)
     ros-jazzy-ros-gz \
     # Useful dev/GUI tools
-    ros-jazzy-rviz2 \
-    ros-jazzy-rqt* \
-    ros-jazzy-ament-lint-auto \
-    ros-jazzy-image-tools \
     ros-jazzy-ros-base \
     ros-jazzy-ros2launch \
-    ros-jazzy-teleop-twist-keyboard \
     python3-colcon-common-extensions \
     python3-rosdep \
     python3-vcstool \
