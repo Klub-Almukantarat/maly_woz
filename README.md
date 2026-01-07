@@ -73,13 +73,11 @@ Można również (w osobnym terminalu) uruchomić `just start-teleop`, który ur
 
 # Development
 
-Do pisania kodu polecany jest VS Code, ponieważ łatwo łączy się z Dockerem, wspiera jednocześnie C++ i Pythona (i inne), ma pluginy do ROSa.
+Do pisania kodu polecany jest VS Code, ponieważ wspiera jednocześnie C++ i Pythona (i inne) oraz ma pluginy do ROSa.
 
-Aby połączyć się z kontenerem, zainstaluj dodatek "Dev Containers".
-Upewnij się, że kontener Dockera jest uruchomiony, a następnie uruchom "linię komand" VS Code za pomocą `Ctrl + Shft + P` i uruchom `Dev Containers: Attach to Running Container`, a potem wybierz nasz kontener `/rover almu_rover` z listy.
-VS Code otworzy nowe okno, które będzie miało kod w środku kontenera.
-Dzięki temu VS Code będzie widział symbole które są zainstalowane i zbudowane w kontenerze i będzie mógł lepiej podpowiadać składnię.
+Wcześniej polecane było połączenie się z kontenerem przy developmencie, ale ponieważ soft został podzielony na kilka niezależnych kontenerów, nie jest to obecnie polecana opcja.
+Aby VS Code dobrze sobie radził z podpowiadaniem składni i widział symbole, polecane jest zainstalować ROSa bezpośrednio na hoście (poza kontenerami) i zbudowanie workspace'a.
+Mogą przy tym wystąpić problemy w budowaniu, ale powinno nieco lepiej działać.
+Mile widziane propozycje udoskonalenia tego procesu.
 
-W kontenerze zainstaluj dodatki jakie poleca VS Code (ROS, ROS2, Python, C/C++ Extension Pack).
-
-TODO: prawdopodobnie VS Code nie będzie widział jeszcze wszystkich zainstalowanych symboli, trzeba dodać odpowiednie ścieżki do jego ustawień.
+Warto zainstalować dodatki, jakie poleca VS Code (ROS, ROS2, Python, C/C++ Extension Pack).

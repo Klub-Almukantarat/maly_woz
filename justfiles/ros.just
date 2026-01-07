@@ -1,5 +1,6 @@
 [group("ROS")]
 ros-build:
+    #!/usr/bin/env bash
     docker compose run --rm software bash -c "\
         . /opt/ros/jazzy/setup.bash && \
         colcon build \
@@ -7,6 +8,14 @@ ros-build:
             --merge-install \
             --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
     "
+    docker compose run --rm simulation-intel-amd bash -c "\
+        . /opt/ros/jazzy/setup.bash && \
+        colcon build \
+            --symlink-install \
+            --merge-install \
+            --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+    "
+    # TODO: build hardware here or in another command?
 
 [group("ROS")]
 start-sim-nvidia:
