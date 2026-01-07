@@ -16,6 +16,13 @@ start-sim-nvidia:
     "
 
 [group("ROS")]
+start-sim-intel-amd:
+    docker compose run --rm simulation-intel-amd bash -c "\
+        . /workspace/install/setup.bash && \
+        ros2 launch maly_woz_bringup start_sim.launch.py use_sim_time:=true \
+    "
+
+[group("ROS")]
 start-teleop:
     docker compose run --rm software bash -c "\
         . /workspace/install/setup.bash && \

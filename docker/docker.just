@@ -25,6 +25,12 @@ docker-attach-sim-nvidia:
     docker compose run --rm -e force_color_prompt=yes simulation-nvidia bash
 
 [group("docker")]
+docker-attach-sim-intel-amd:
+    #!/usr/bin/env bash
+    xhost +local:docker
+    docker compose run --rm -e force_color_prompt=yes simulation-intel-amd bash
+
+[group("docker")]
 docker-attach-hard:
     #!/usr/bin/env bash
     xhost +local:docker
