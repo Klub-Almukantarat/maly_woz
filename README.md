@@ -64,8 +64,9 @@ Budowanie tworzy linki symboliczne, co oznacza, że można zmieniać pliki nieko
 ## Uruchamianie dema
 
 Po zbudowaniu możesz uruchomić demo za pomocą `just start-sim-nvidia` lub `just start-sim-intel-amd`.
+W osobnym terminalu `just start-soft`, i w kolejnym `just start-teleop`
 Powinna wystartować symulacja (Gazebo/Ignition) i wizualizacja (RViz)  z prostym łazikiem na "Księżycu", a także RTAB-Map umożliwiający odometrię i mapowanie otoczenia.
-Uruchamiane są również node'y obsługujące sterowanie joystickiem, więc jeśli taki podłączysz, powinieneś być w stanie kontrolować łazik.
+Uruchamiane są również node'y obsługujące sterowanie joystickiem, więc jeśli taki podłączysz, powinieneś być w stanie kontrolować łazik (obecnie nie zaimplementowane).
 Można również (w osobnym terminalu) uruchomić `just start-teleop`, który uruchomi node umożliwiający sterowanie za pomocą klawiatury.
 
 ![Demo running](docs/demo-running.png)

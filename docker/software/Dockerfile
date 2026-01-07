@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install additional packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-jazzy-robot-state-publisher \
     ros-jazzy-teleop-twist-keyboard \
     ros-jazzy-xacro \
     && rm -rf /var/lib/apt/lists/*
