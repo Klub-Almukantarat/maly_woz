@@ -19,7 +19,6 @@ from launch_ros.event_handlers import OnStateTransition
 
 
 def generate_launch_description():
-    pkg_ros_gz_sim = get_package_share_directory("ros_gz_sim")
     pkg_description = get_package_share_directory("maly_woz_description")
     pkg_share = get_package_share_directory("maly_woz_bringup")
 
@@ -47,52 +46,11 @@ def generate_launch_description():
         ],
     )
 
-    # world_file = "warehouse.sdf"  # TODO make this a parameter
-    world_file = "lunar_world.sdf"
-    gazebo = IncludeLaunchDescription(
+    rtabmap = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py")
+            os.path.join(pkg_share, "launch", "rtabmap_mapping.launch.py")
         ),
-        launch_arguments={
-            "gz_args": f"-r {world_file}",
-        }.items(),
     )
-
-    spawn = Node(
-        package="ros_gz_sim",
-        executable="create",
-        arguments=[
-            "-name",
-            "rover",
-            "-x",
-            "0",
-            "-y",
-            "0",
-            "-z",
-            "0",
-            "-topic",
-            "/robot_description",
-        ],
-        output="screen",
-    )
-
-    bridge = Node(
-        package="ros_gz_bridge",
-        executable="parameter_bridge",
-        parameters=[
-            {
-                "qos_overrides./model/rover.subscriber.reliability": "reliable",
-                "config_file": os.path.join(pkg_share, "config", "ros_gz_bridge.yaml"),
-            }
-        ],
-        output="screen",
-    )
-
-    # rtabmap = IncludeLaunchDescription(
-    #    PythonLaunchDescriptionSource(
-    #        os.path.join(pkg_share, "launch", "rtabmap_mapping.launch.py")
-    #    ),
-    # )
 
     # TODO load depending on parameter
     joy_node = Node(
@@ -117,10 +75,7 @@ def generate_launch_description():
     return LaunchDescription(
         [
             robot_state_pub_node,
-            gazebo,
-            spawn,
-            bridge,
-            # rtabmap,
+            rtabmap,
             TimerAction(period=2.0, actions=[rviz]),
         ]
     )

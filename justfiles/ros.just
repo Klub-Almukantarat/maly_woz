@@ -12,14 +12,21 @@ ros-build:
 start-sim-nvidia:
     docker compose run --rm simulation-nvidia bash -c "\
         . /workspace/install/setup.bash && \
-        ros2 launch maly_woz_bringup start_sim.launch.py use_sim_time:=true \
+        ros2 launch maly_woz_gz start_sim.launch.py use_sim_time:=true \
     "
 
 [group("ROS")]
 start-sim-intel-amd:
     docker compose run --rm simulation-intel-amd bash -c "\
         . /workspace/install/setup.bash && \
-        ros2 launch maly_woz_bringup start_sim.launch.py use_sim_time:=true \
+        ros2 launch maly_woz_gz start_sim.launch.py use_sim_time:=true \
+    "
+
+[group("ROS")]
+start-soft:
+    docker compose run --rm software bash -c "\
+        . /workspace/install/setup.bash && \
+        ros2 launch maly_woz_bringup main.launch.py use_sim_time:=true \
     "
 
 [group("ROS")]

@@ -10,8 +10,10 @@ find_package(ament_cmake REQUIRED)
 
 # Install files.
 install(DIRECTORY
-  worlds
+  config
+  launch
   models
+  worlds
   DESTINATION share/${PROJECT_NAME}/
 )
 
