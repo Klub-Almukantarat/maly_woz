@@ -44,9 +44,9 @@ Aby wykorzystać WSL zapoznaj się z tym [plikiem](docs/WSL.md).
 
 ## Budowanie i uruchomienie kontenera Dockera
 
-Aby zbudować obraz Dockera, uruchom `just docker-build`.
-Aby uruchomić kontener, uruchom `just docker-start`.
-Aby dołączyć do działającego kontenera uruchom `just docker-attach`.
+Aby zbudować obrazy Dockera, uruchom `just docker-build`.
+Aby uruchomić kontener z symulacją, uruchom `just start-sim-nvidia` lub `just start-sim-intel-amd` (zależnie od CPU i GPU).
+Aby dołączyć do działającego kontenera uruchom `just docker-attach-sim-nvidia` lub `just docker-attach-sim-intel-amd`.
 
 ### Obrazy i kontenery Dockera
 
@@ -58,15 +58,15 @@ Aby dołączyć do działającego kontenera uruchom `just docker-attach`.
 ## Budowanie kodu
 
 Repozytorium jest workspacem ROSa.
-Aby go zbudować, uruchom `just ros-build`.
+Aby go zbudować w kontenerze, uruchom `just ros-build`.
 Budowanie tworzy linki symboliczne, co oznacza, że można zmieniać pliki niekompilowalne (konfiguracyjne, Pythona, xmle, itd.) bezpośrednio w folderze `src` i będzie to działać (zmiany w C++ wymagają oczywiście ponownej kompilacji).
 
 ## Uruchamianie dema
 
-Po zbudowaniu możesz uruchomić demo za pomocą `just sim`.
+Po zbudowaniu możesz uruchomić demo za pomocą `just start-sim-nvidia` lub `just start-sim-intel-amd`.
 Powinna wystartować symulacja (Gazebo/Ignition) i wizualizacja (RViz)  z prostym łazikiem na "Księżycu", a także RTAB-Map umożliwiający odometrię i mapowanie otoczenia.
 Uruchamiane są również node'y obsługujące sterowanie joystickiem, więc jeśli taki podłączysz, powinieneś być w stanie kontrolować łazik.
-Można również (w osobnym terminalu) uruchomić `just teleop`, który uruchomi node umożliwiający sterowanie za pomocą klawiatury.
+Można również (w osobnym terminalu) uruchomić `just start-teleop`, który uruchomi node umożliwiający sterowanie za pomocą klawiatury.
 
 ![Demo running](docs/demo-running.png)
 
