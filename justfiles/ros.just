@@ -8,7 +8,7 @@ ros-build:
             --merge-install \
             --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
     "
-    docker compose run --rm simulation-intel-amd bash -c "\
+    docker compose run --rm simulation-${HOST_HW} bash -c "\
         . /opt/ros/jazzy/setup.bash && \
         colcon build \
             --symlink-install \
@@ -18,15 +18,8 @@ ros-build:
     # TODO: build hardware here or in another command?
 
 [group("ROS")]
-start-sim-nvidia:
-    docker compose run --rm simulation-nvidia bash -c "\
-        . /workspace/install/setup.bash && \
-        ros2 launch maly_woz_gz start_sim.launch.py use_sim_time:=true \
-    "
-
-[group("ROS")]
-start-sim-intel-amd:
-    docker compose run --rm simulation-intel-amd bash -c "\
+start-sim:
+    docker compose run --rm simulation-${HOST_HW} bash -c "\
         . /workspace/install/setup.bash && \
         ros2 launch maly_woz_gz start_sim.launch.py use_sim_time:=true \
     "

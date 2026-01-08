@@ -5,8 +5,15 @@ Projekt łazika marsjańskiego.
 
 ## Wymagania
 
-Kod używa ROS 2 Humble i jest rozwijany głównie dla Linux Ubuntu 22.04.
+Kod używa ROS 2 Jazzy i jest rozwijany głównie dla Linux Ubuntu 24.04.
 Może być możliwe uruchomienie go na innych platformach, ale obecnie nie są one explicite wspierane.
+
+### Plik `.env`
+
+Na samym początku należy skopiować plik `.env.template` jako `.env` (`cp .env.template .env`) i uzupełnić według posiadango CPU i GPU.
+Jeśli żadna z opcji nie działa na twoim komputerze, daj znać.
+
+Dostępnymi opcjami na `HOST_HW` są: [`nvidia`, `intel-amd`].
 
 ### just
 
