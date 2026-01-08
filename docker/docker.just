@@ -9,8 +9,7 @@ docker-build:
 
     docker compose build software
     docker compose build hardware
-    docker compose build simulation-nvidia
-    docker compose build simulation-intel-amd
+    docker compose build simulation-${HOST_HW}
 
 [group("docker")]
 docker-attach-soft:
@@ -19,16 +18,10 @@ docker-attach-soft:
     docker compose run --rm -e force_color_prompt=yes software bash
 
 [group("docker")]
-docker-attach-sim-nvidia:
+docker-attach-sim:
     #!/usr/bin/env bash
     xhost +local:docker
-    docker compose run --rm -e force_color_prompt=yes simulation-nvidia bash
-
-[group("docker")]
-docker-attach-sim-intel-amd:
-    #!/usr/bin/env bash
-    xhost +local:docker
-    docker compose run --rm -e force_color_prompt=yes simulation-intel-amd bash
+    docker compose run --rm -e force_color_prompt=yes simulation-${HOST_HW} bash
 
 [group("docker")]
 docker-attach-hard:

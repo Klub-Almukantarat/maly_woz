@@ -1,3 +1,6 @@
+set dotenv-load
+set dotenv-required
+
 ls:
     just --list
 
